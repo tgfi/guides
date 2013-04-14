@@ -31,7 +31,7 @@ Set up the app's dependencies.
 For a Heroku project, use [Heroku config](https://github.com/ddollar/heroku-config) to get `ENV`
 variables.
 
-    heroku config:pull -r staging
+    heroku config:pull --remote staging
 
 Delete extra lines in `.env`, leaving only those needed for app to function
 properly. For example: `MERCHANT_ID` and `S3_SECRET`.
@@ -86,7 +86,7 @@ Rebase frequently to incorporate upstream changes.
     g fetch origin
     g rebase origin/master
 
-When feature is complete and tests pass, commit the changes.
+Resolve conflicts. When feature is complete and tests pass, stage the changes.
 
     rake
     g add -A
@@ -106,7 +106,7 @@ Share your branch.
 
     g push origin [branch]
 
-Submit a [Github pull request](http://goo.gl/Kmdee).
+Submit a [GitHub pull request](http://goo.gl/Kmdee).
 
 Ask for a code review in [Campfire](http://tgfi.campfirenow.com).
 
@@ -167,13 +167,14 @@ Run migrations (if necessary).
 
     heroku run rake db:migrate -r staging
 
-Restart the dynos if migrations were run.
+If necessary, run migrations and restart the dynos.
 
-    heroku restart -r staging
+    heroku run rake db:migrate --remote staging
+    heroku restart --remote staging
 
 [Introspect](http://goo.gl/tTgVF) to make sure everything's ok.
 
-    watch heroku ps -r staging
+    watch heroku ps --remote staging
 
 Test the feature in browser.
 
