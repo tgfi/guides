@@ -107,13 +107,13 @@ Write a [good commit message]. Example format:
 Share your branch.
 
     g push origin [branch]
+<<<<<<< HEAD
 
 Submit a [GitHub pull request].
+=======
+>>>>>>> Updating protocol guide with TGFI processes and home page.
 
 Ask for a code review in [Campfire](https://campfirenow.com/).
-
-[good commit message]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
-[GitHub pull request]: https://help.github.com/articles/using-pull-requests/
 
 Review code
 -----------
@@ -218,12 +218,12 @@ Watch logs and metrics dashboards.
 
 Close pull request and comment `Merged.`
 
-[Introspect]: http://blog.heroku.com/archives/2011/6/24/the_new_heroku_3_visibility_introspection/
-
 Set Up Production Environment
 -----------------------------
 
-* Make sure that your [`Procfile`] is set up to run Unicorn.
+* Make sure that your
+  [`Procfile`](https://devcenter.heroku.com/articles/procfile)
+  is set up to run Unicorn.
 * Make sure the PG Backups add-on is enabled.
 * Create a read-only [Heroku Follower] for your production database. If a Heroku
   database outage occurs, Heroku can use the follower to get your app back up
