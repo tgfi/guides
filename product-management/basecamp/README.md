@@ -1,7 +1,7 @@
-Product management process with Trello
+Product management process with Basecamp
 ======================================
 
-The product management process with [Trello](http://trello.com) spans multiple
+The product management process with [Basecamp](http://www.basecamphq.com) spans multiple
 Trello boards:
 
 * Bugs

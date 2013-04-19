@@ -3,46 +3,20 @@ Protocol
 
 A guide for getting things done.
 
-Set up laptop
+Set up your laptop
 -------------
-
-Install the latest version of Xcode from the App Store.
 
 Set up your laptop with [this script](https://github.com/thoughtbot/laptop)
 and [these dotfiles](https://github.com/thoughtbot/dotfiles).
 
-Create Rails app
-----------------
+Install RVM
+-------------
 
-Get Suspenders.
+We use [Ruby Version Manager](http://rvm.io) to easily switch between rubies and gemsets.
 
-    gem install suspenders
+    $ \curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby
 
-Create the app.
-
-    suspenders app --heroku true --github organization/app
-
-Create iOS app
---------------
-
-Create a new project in Xcode with these settings:
-
-* Check 'Create local git repository for this project'.
-* Check 'Use Automatic Reference Counting'.
-* Set an appropriate 2 or 3 letter class prefix.
-* Set the Base SDK to 'Latest iOS'.
-* Set the iOS Deployment Target to 6.0.
-* Use the Apple LLVM compiler.
-
-Get liftoff.
-
-    gem install liftoff
-
-Run liftoff in the project directory.
-
-    liftoff
-
-Set up Rails app
+Set up an existing Rails app
 ----------------
 
 Get the code.
@@ -54,13 +28,15 @@ Set up the app's dependencies.
     cd project
     ./bin/setup
 
-Use [Heroku config](https://github.com/ddollar/heroku-config) to get `ENV`
+For a Heroku project, use [Heroku config](https://github.com/ddollar/heroku-config) to get `ENV`
 variables.
 
     heroku config:pull -r staging
 
 Delete extra lines in `.env`, leaving only those needed for app to function
-properly. For example: `BRAINTREE_MERCHANT_ID` and `S3_SECRET`.
+properly. For example: `MERCHANT_ID` and `S3_SECRET`.
+
+For other projects, create a `config/config.yml` file and see your project manager for values.
 
 Use [Foreman](http://goo.gl/oy4uw) to run the app locally.
 
@@ -69,13 +45,30 @@ Use [Foreman](http://goo.gl/oy4uw) to run the app locally.
 It uses your `.env` file and `Procfile` to run processes just like Heroku's
 [Cedar](https://devcenter.heroku.com/articles/cedar/) stack.
 
+
+Tell your application what ruby version you are running in `.ruby-version`.
+
+    ruby-1.9.3-p392
+
+Tell your application what gemset you are running in `.ruby-gemset`.
+
+    app
+
+Let Pow know what ruby and gemset the app uses by creating a `.powrc` file.
+
+    if [ -f "$rvm_path/scripts/rvm" ] && [ -f ".ruby-version" ] && [ -f ".ruby-gemset" ]; then
+      source "$rvm_path/scripts/rvm"
+      rvm use `cat .ruby-version`@`cat .ruby-gemset`
+    fi
+
+
 Maintain a Rails app
 --------------------
 
 * Avoid including files in source control that are specific to your
   development machine or process.
-* Delete local and remote feature branches after merging.
 * Perform work in a feature branch.
+* Delete local and remote feature branches after merging.
 * Rebase frequently to incorporate upstream changes.
 * Use a [pull request](http://goo.gl/Kmdee) for code reviews.
 
@@ -84,22 +77,21 @@ Write a feature
 
 Create a local feature branch based off master.
 
-    git checkout master
-    git pull --rebase
-    git checkout -b your-initials-new-feature
+    g co master
+    g pull --rebase
+    g create-branch your-initials-new-feature
 
 Rebase frequently to incorporate upstream changes.
 
-    git fetch origin
-    git rebase origin/master
-    <resolve conflicts>
+    g fetch origin
+    g rebase origin/master
 
 When feature is complete and tests pass, commit the changes.
 
     rake
-    git add -A
-    git status
-    git commit -v
+    g add -A
+    g
+    g ci -v
 
 Write a [good commit message](http://goo.gl/w11us). Example format:
 
@@ -112,11 +104,11 @@ Write a [good commit message](http://goo.gl/w11us). Example format:
 
 Share your branch.
 
-    git push origin [branch]
+    g push origin [branch]
 
 Submit a [Github pull request](http://goo.gl/Kmdee).
 
-Ask for a code review in [Campfire](http://campfirenow.com).
+Ask for a code review in [Campfire](http://tgfi.campfirenow.com).
 
 Review code
 -----------
@@ -130,10 +122,10 @@ web interface or in Campfire.
 
 For changes which they can make themselves, they check out the branch.
 
-    git checkout <branch>
+    g co <branch>
     rake db:migrate
     rake
-    git diff staging/master..HEAD
+    g diff staging/master..HEAD
 
 They make small changes right in the branch, test the feature in browser,
 run tests, commit, and push.
@@ -146,35 +138,30 @@ Merge
 Rebase interactively. Squash commits like "Fix whitespace" into one or a
 small number of valuable commit(s). Edit commit messages to reveal intent.
 
-    git rebase -i origin/master
+    g rebase -i origin/master
     rake
 
 View a list of new commits. View changed files. Merge branch into master.
 
-    git log origin/master..[branch]
-    git diff --stat origin/master
-    git checkout master
-    git merge [branch] --ff-only
-    git push
+    g log origin/master..[branch]
+    g diff --stat origin/master
+    g checkout master
+    g merge-branch [branch
+    g push
 
-Delete your remote feature branch.
+Delete your local and remote feature branch.
 
-    git push origin :[branch]
+    g delete-branch [branch]
 
-Delete your local feature branch.
-
-    git branch -d [branch]
-
-Deploy
+Deploy via Heroku
 ------
 
-View a list of new commits. View changed files. Deploy to
-[Heroku](https://devcenter.heroku.com/articles/quickstart) staging.
+View a list of new commits. View changed files. Deploy to staging.
 
-    git fetch staging
-    git log staging/master..master
-    git diff --stat staging/master
-    git push staging master
+    g fetch staging
+    g log staging/master..master
+    g diff --stat staging/master
+    g push staging master
 
 Run migrations (if necessary).
 
@@ -192,13 +179,34 @@ Test the feature in browser.
 
 Deploy to production.
 
-    git fetch production
-    git log production/master..master
-    git diff --stat production/master
-    git push production master
+    g fetch production
+    g log production/master..master
+    g diff --stat production/master
+    g push production master
     heroku run rake db:migrate -r production
     heroku restart -r production
     watch heroku ps -r production
+
+Watch logs and metrics dashboards.
+
+Close pull request and comment `Merged.`
+
+Deploy via Capistrano
+------
+
+View a list of new commits. View changed files. Deploy to staging.
+
+If you are using heroku, you
+
+    cap staging deploy
+
+This will automatically run migrations (if necessary) and restart Passenger Phusion.
+
+Test the feature in browser.
+
+Deploy to production.
+
+    cap production deploy
 
 Watch logs and metrics dashboards.
 
@@ -209,7 +217,7 @@ Set Up Production Environment
 
 * Make sure that your
   [`Procfile`](https://devcenter.heroku.com/articles/procfile)
-  is set up to run thin.
+  is set up to run Unicorn.
 * Make sure the PG Backups add-on is enabled.
 * Create a read-only [Heroku Follower](http://goo.gl/xWDMx) for your
   production database. If a Heroku database outage occurs, Heroku can use the
