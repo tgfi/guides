@@ -38,7 +38,7 @@ properly. For example: `MERCHANT_ID` and `S3_SECRET`.
 
 For other projects, create a `config/config.yml` file and see your project manager for values.
 
-Use [Foreman](http://goo.gl/oy4uw) to run the app locally.
+Use [Foreman](https://github.com/ddollar/foreman) to run the app locally.
 
     foreman start
 
@@ -72,7 +72,7 @@ Maintain a Rails app
 * Rebase frequently to incorporate upstream changes.
 * Use a [pull request] for code reviews.
 
-[pull request]: http://goo.gl/Kmdee
+[pull request]: https://help.github.com/articles/using-pull-requests/
 
 Write a feature
 ---------------
@@ -95,22 +95,25 @@ Resolve conflicts. When feature is complete and tests pass, stage the changes.
     g
     g ci -v
 
-Write a [good commit message](http://goo.gl/w11us). Example format:
+Write a [good commit message]. Example format:
 
     Present-tense summary under 50 characters
 
     * More information about commit (under 72 characters).
     * More information about commit (under 72 characters).
 
-    http://project.management-system.com/ticket/123
+    http:://project.management-system.com/ticket/123
 
 Share your branch.
 
     g push origin [branch]
 
-Submit a [GitHub pull request](http://goo.gl/Kmdee).
+Submit a [GitHub pull request].
 
-Ask for a code review in [Campfire](http://tgfi.campfirenow.com).
+Ask for a code review in [Campfire](https://campfirenow.com/).
+
+[good commit message]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+[GitHub pull request]: https://help.github.com/articles/using-pull-requests/
 
 Review code
 -----------
@@ -174,7 +177,7 @@ If necessary, run migrations and restart the dynos.
     heroku run rake db:migrate --remote staging
     heroku restart --remote staging
 
-[Introspect](http://goo.gl/tTgVF) to make sure everything's ok.
+[Introspect] to make sure everything's ok.
 
     watch heroku ps --remote staging
 
@@ -215,6 +218,8 @@ Watch logs and metrics dashboards.
 
 Close pull request and comment `Merged.`
 
+[Introspect]: http://blog.heroku.com/archives/2011/6/24/the_new_heroku_3_visibility_introspection/
+
 Set Up Production Environment
 -----------------------------
 
@@ -224,5 +229,5 @@ Set Up Production Environment
   database outage occurs, Heroku can use the follower to get your app back up
   and running faster.
 
-[Heroku Follower]: http://goo.gl/xWDMx
+[Heroku Follower]: https://devcenter.heroku.com/articles/improving-heroku-postgres-availability-with-followers
 [`Procfile`]: https://devcenter.heroku.com/articles/procfile
