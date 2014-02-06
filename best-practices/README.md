@@ -81,6 +81,73 @@ Rails
   (`user_id`).
 * Use `db/seeds.rb` for data that is required in all environments.
 * Use `dev:prime` rake task for development environment seed data.
+* Follow this pattern for Active Record model layout:
+
+```ruby
+class Company
+  
+  # includes
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+  
+  devise :database_authenticatable, :token_authenticatable, :recoverable, :trackable, :invitable, :timeoutable
+  
+  # constants
+  TYPES = %w(small medium giantess)
+  
+  # attr_* and cattr_* macros
+  attr_accessor :date_of_incorporation
+  attr_accessible :name, :address, :city, :state, :zip
+  
+  # aliases
+  alias :story :commentable
+  alias :idea :commentable
+  
+  # associations
+  has_many :people
+  belongs_to :country
+  
+  has_attached_file :file, PAPERCLIP_OPTIONS
+    
+  # validations
+  validates :name, presence: true
+  
+  # callbacks
+  before_save :update_coordinates
+  
+  # other macros
+  accepts_nested_attributes_for :people
+  
+  # scopes
+  default_scope { where(active: true) }
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
+  
+  # class methods
+  def self.types
+    TYPES
+  end
+
+  # public methods
+  def full_address
+    
+  end
+  
+  # protected methods
+  protected
+  
+  def floor
+    
+  end
+  
+  private
+  
+  def floor2
+    
+  end
+  
+end
+```
 
 [`.ruby-version`]: https://gist.github.com/fnichol/1912050
 [redirects]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30
