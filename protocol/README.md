@@ -95,23 +95,20 @@ Resolve conflicts. When feature is complete and tests pass, stage the changes.
     g
     g ci -v
 
-Write a [good commit message]. Example format:
+Write a [good commit message] and include the YouTrack issue id. Example format:
 
     Present-tense summary under 50 characters
 
-    * More information about commit (under 72 characters).
-    * More information about commit (under 72 characters).
+    * ABC-1: More information about commit (under 72 characters).
+    * ABC-2: More information about commit (under 72 characters).
 
     http:://project.management-system.com/ticket/123
 
 Share your branch.
 
     g push origin [branch]
-<<<<<<< HEAD
 
 Submit a [GitHub pull request].
-=======
->>>>>>> Updating protocol guide with TGFI processes and home page.
 
 Ask for a code review in [Campfire](https://campfirenow.com/).
 
